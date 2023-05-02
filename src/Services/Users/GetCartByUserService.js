@@ -20,9 +20,30 @@ const GetCartByUserService = async (req, model) => {
       {
         $project: {
           cartData: 1,
-          userFullName: 1,
+          qty: "$cartData.cartItem.foodQty",
+          price: "$cartData.cartItem.foodPrice",
+          mul: {
+            $multiply: ["cartData.cartItem.foodPrice", 1],
+          },
         },
       },
+      // {
+      //   $unwind: "$cartData",
+      // },
+
+      // {
+      //   $project: {
+      //     cartData: 1,
+      //     total: {
+      //       // $sum: {
+      //       $multiply: [
+      //         "$data.cartData.cartItem.foodPrice",
+      //         "$data.cartData.cartItem.foodQty",
+      //       ],
+      //       // },
+      //     },
+      //   },
+      // },
     ]);
 
     return { status: "Success", data: data };
