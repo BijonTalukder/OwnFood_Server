@@ -15,32 +15,46 @@ const GetCartByUserService = async (req, model) => {
           localField: "_id",
           foreignField: "customerID",
           as: "cartData",
+          // pipeline: [
+          //   {
+          //     $project: {
+          //       foodName: 1,
+          //     },
+          //   },
+          // ],
         },
       },
       {
         $project: {
           cartData: 1,
-          qty: "$cartData.cartItem.foodQty",
-          price: "$cartData.cartItem.foodPrice",
-          mul: {
-            $multiply: ["cartData.cartItem.foodPrice", 1],
-          },
         },
       },
       // {
       //   $unwind: "$cartData",
       // },
-
       // {
       //   $project: {
       //     cartData: 1,
       //     total: {
-      //       // $sum: {
-      //       $multiply: [
-      //         "$data.cartData.cartItem.foodPrice",
-      //         "$data.cartData.cartItem.foodQty",
-      //       ],
-      //       // },
+      //       $sum: "$cartData.cartItem.foodPrice",
+      //     },
+      //   },
+      // },
+      // {
+      //   $unwind: {
+      //     path: "$cartData",
+      //   },
+      // },
+      // {
+      //   $project: {
+      // cartData: 1,
+      //     total: {
+      //       $sum: {
+      //         $multiply: [
+      //           "$cartData.cartItem.foodPrice",
+      //           "$cartData.cartItem.foodQty",
+      //         ],
+      //       },
       //     },
       //   },
       // },
