@@ -15,20 +15,19 @@ const GetCartByUserService = async (req, model) => {
           localField: "_id",
           foreignField: "customerID",
           as: "cartData",
-          // pipeline: [
-          //   {
-          //     $project: {
-          //       foodName: 1,
-          //     },
-          //   },
-          // ],
         },
       },
-      {
-        $project: {
-          cartData: 1,
-        },
-      },
+      // {
+      //   $addFields: {
+      //     data: " $cartData.cartItem",
+      //   },
+      // },
+      // {
+      //   $project: {
+      //     cartData: 1,
+      //     // $concatArrays: ["$$foodPrice"],
+      //   },
+      // },
       // {
       //   $unwind: "$cartData",
       // },

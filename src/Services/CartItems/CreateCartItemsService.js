@@ -2,6 +2,7 @@ const FoodModel = require("../../Models/Food/FoodModel");
 
 const CreateCartItemsService = async (request, Model) => {
   try {
+    let totalSum = 0;
     let postBody = request.body;
     //console.log(postBody);
     const cardChecked = await Model.findOne({
@@ -13,19 +14,20 @@ const CreateCartItemsService = async (request, Model) => {
       if (food.foodPrice !== postBody.cartItem[i].foodPrice) {
         postBody.cartItem[i].foodPrice = food.foodPrice;
       }
+      totalSum = totalSum + food.foodPrice * postBody.cartItem[i].foodQty;
     }
-
+    //  console.log({ ...postBody, foodTotalPrice: totalSum });
     if (cardChecked) {
       const doc = await Model.findOneAndUpdate(
         { customerID: postBody.customerID },
-        postBody,
+        { ...postBody, foodTotalPrice: totalSum },
         {
           new: true,
         }
       );
       return { status: "Success", data: doc };
     } else {
-      let data = await Model.create(postBody);
+      let data = await Model.create({ ...postBody, foodTotalPrice: totalSum });
       return { status: "Success", data: data || doc };
     }
   } catch (e) {
