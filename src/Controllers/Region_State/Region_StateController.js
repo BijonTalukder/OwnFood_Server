@@ -1,6 +1,7 @@
 const Region_StateModel = require("../../Models/Region_State/Region_StateModel");
 const CreateRegion_StateService = require("../../Services/Region_State/CreateRegion_StateService");
 const DeleteRegion_StateService = require("../../Services/Region_State/DeleteRegion_StateService");
+const GetRegionByCountryService = require("../../Services/Region_State/GetRegionByCountryService");
 const GetRegion_StateService = require("../../Services/Region_State/GetRegion_StateService");
 const GetSingleRegion_StateService = require("../../Services/Region_State/GetSingleRegion_StateService");
 const UpdateRegion_StateService = require("../../Services/Region_State/UpdateRegion_StateService");
@@ -31,5 +32,11 @@ exports.UpdateRegion_State = async (req, res) => {
 //! Delete Region_State
 exports.DeleteRegion_State = async (req, res) => {
   let result = await DeleteRegion_StateService(req, Region_StateModel);
+  res.status(200).json(result);
+};
+
+//!get country by city
+exports.GetRegionByCountry = async (req, res) => {
+  let result = await GetRegionByCountryService(req, Region_StateModel);
   res.status(200).json(result);
 };

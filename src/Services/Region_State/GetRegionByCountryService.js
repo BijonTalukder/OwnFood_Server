@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const GetSingleCityService = async (request, Model) => {
+const GetRegionByCountryService = async (request, Model) => {
   try {
     let id = mongoose.Types.ObjectId(request.params.id);
     let data = await Model.aggregate([
@@ -23,4 +23,4 @@ const GetSingleCityService = async (request, Model) => {
   }
 };
 
-module.exports = GetSingleCityService;
+module.exports = GetRegionByCountryService;

@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const DataSchema = mongoose.Schema(
   {
+    phoneNumber: { type: Number },
+    Name: { type: String },
     cityID: { type: mongoose.Schema.Types.ObjectId },
     regionID: { type: mongoose.Schema.Types.ObjectId },
     countryID: { type: mongoose.Schema.Types.ObjectId },

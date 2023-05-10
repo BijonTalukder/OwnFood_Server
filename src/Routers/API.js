@@ -536,7 +536,7 @@ router.post("/filter", FoodItemController.FilterFood),
   );
 
 //get Country
-router.get("/get-country", AuthVerifyMiddleware, CountryController.GetCountry);
+router.get("/get-country", CountryController.GetCountry);
 
 //get single Country
 router.get(
@@ -607,6 +607,12 @@ router.delete(
   "/delete-region-state/:id",
 
   Region_StateController.DeleteRegion_State
+);
+
+// get reigion by country
+router.get(
+  "/get-reigion-by-country/:id",
+  Region_StateController.GetRegionByCountry
 );
 
 //!  ================== ****  City  **** ==================
