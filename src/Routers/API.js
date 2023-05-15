@@ -643,6 +643,7 @@ router.delete(
 
   CityController.DeleteCity
 );
+router.get("/get-city-by-reigion/:id", CityController.GetCityByReigion);
 
 //!  ================== ****  AddressBook  **** ==================
 

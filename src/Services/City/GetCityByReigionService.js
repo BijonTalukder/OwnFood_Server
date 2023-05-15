@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const GetRegionByCountryService = async (request, Model) => {
+const GetCityByReigionService = async (request, Model) => {
   try {
     let id = mongoose.Types.ObjectId(request.params.id);
     let data = await Model.aggregate([
       {
-        $match: { countryID: id },
+        $match: { regionID: id },
       },
     ]);
     return { status: "Success", data: data };
@@ -13,4 +13,4 @@ const GetRegionByCountryService = async (request, Model) => {
   }
 };
 
-module.exports = GetRegionByCountryService;
+module.exports = GetCityByReigionService;

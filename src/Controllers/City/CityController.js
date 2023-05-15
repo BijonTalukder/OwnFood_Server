@@ -1,5 +1,6 @@
 const CityModel = require("../../Models/City/CityModel");
 const CreateCityService = require("../../Services/City/CreateCityService");
+const GetCityByReigionService = require("../../Services/City/GetCityByReigionService");
 const GetCityService = require("../../Services/City/GetCityService");
 const GetSingleCityService = require("../../Services/City/GetSingleCityService");
 const UpdateCityService = require("../../Services/City/UpdateCityService");
@@ -31,5 +32,10 @@ exports.UpdateCity = async (req, res) => {
 //! Delete City
 exports.DeleteCity = async (req, res) => {
   let result = await DeleteCityService(req, CityModel);
+  res.status(200).json(result);
+};
+
+exports.GetCityByReigion = async (req, res) => {
+  let result = await GetCityByReigionService(req, CityModel);
   res.status(200).json(result);
 };
