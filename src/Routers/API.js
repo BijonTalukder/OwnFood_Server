@@ -526,14 +526,19 @@ router.get(
 
 // Search Food by single category ID by sub-category, tags, cusion, review, food-type, price near-me
 router.post("/filter", FoodItemController.FilterFood),
-  //!  ================== ****  Country  **** ==================
-
-  //create Country
-  router.post(
-    "/create-country",
-
-    CountryController.CreateCountry
+  // all food sort by category
+  router.get(
+    "/get-food-sort-by-category/:id",
+    FoodItemController.GetFoodSortByCategory
   );
+//!  ================== ****  Country  **** ==================
+
+//create Country
+router.post(
+  "/create-country",
+
+  CountryController.CreateCountry
+);
 
 //get Country
 router.get("/get-country", CountryController.GetCountry);

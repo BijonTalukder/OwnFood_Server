@@ -5,6 +5,7 @@ const GetFoodService = require("../../Services/Food/GetFoodService");
 const GetSingleFoodService = require("../../Services/Food/GetSingleFoodService");
 const FilterFoodService = require("../../Services/Food/FilterFoodService");
 const UpdateFoodService = require("../../Services/Food/UpdateFoodService");
+const GetFoodSortByCategoryService = require("../../Services/Food/GetFoodSortByCategoryService");
 
 //! Create Food
 exports.CreateFood = async (req, res) => {
@@ -38,5 +39,11 @@ exports.DeleteFood = async (req, res) => {
 //! Search Food By Single Category
 exports.FilterFood = async (req, res) => {
   let result = await FilterFoodService(req, FoodModel);
+  res.status(200).json(result);
+};
+
+//!Get All Food By category
+exports.GetFoodSortByCategory = async (req, res) => {
+  let result = await GetFoodSortByCategoryService(req, FoodModel);
   res.status(200).json(result);
 };
