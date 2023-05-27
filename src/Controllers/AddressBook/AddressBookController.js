@@ -4,6 +4,7 @@ const DeleteAddressBookService = require("../../Services/AddressBook/DeleteAddre
 const GetAddressBookService = require("../../Services/AddressBook/GetAddressBookService");
 const GetSingleAddressBookService = require("../../Services/AddressBook/GetSingleAddressBookService");
 const UpdateAddressBookService = require("../../Services/AddressBook/UpdateAddressBookService");
+const GetAddressBookByUserService = require("../../Services/AddressBook/getAddressBookByUserService");
 
 //! Create AddressBook
 exports.CreateAddressBook = async (req, res) => {
@@ -33,3 +34,9 @@ exports.DeleteAddressBook = async (req, res) => {
   let result = await DeleteAddressBookService(req, AddressBookModel);
   res.status(200).json(result);
 };
+
+//! Get AddressBook By User
+exports.GetAddressBookByUser = async (req, res) => {
+  let result = await GetAddressBookByUserService(req, AddressBookModel);
+  res.status(200).json(result);
+}

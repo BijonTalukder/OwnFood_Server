@@ -10,6 +10,14 @@ const GetFoodSortByCategoryService = async (request, Model) => {
           sellerID: ID,
         },
       },
+      // {
+      //   $lookup: {
+      //     from: "become-a-sellers",
+      //     localField: "sellerID",
+      //     foreignField: "_id",
+      //     as: "SellerData",
+      //   },
+      // },
       {
         $lookup: {
           from: "categorys",
@@ -30,6 +38,7 @@ const GetFoodSortByCategoryService = async (request, Model) => {
       {
         $group: {
           _id: "$categoryData.categoryName",
+          // categoryName: "$categoryData.categoryName",
           foods: {
             $push: "$$ROOT",
           },

@@ -687,6 +687,9 @@ router.delete(
   AddressBookController.DeleteAddressBook
 );
 
+//get address book by user
+router.get("/get-address-book-by-user/:id",AddressBookController.GetAddressBookByUser)
+
 //!  ================== ****  Food Review  **** ==================
 
 //create food review
