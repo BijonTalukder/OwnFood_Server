@@ -1399,4 +1399,10 @@ router.delete(
   RecipeCategoryController.DeleteRecipeCategory
 );
 
+//! Payment method intrigate
+
+router.post("https://sandbox.walletmix.com/init-payment-process",async(req,res)=>{
+
+})
+
 module.exports = router;
