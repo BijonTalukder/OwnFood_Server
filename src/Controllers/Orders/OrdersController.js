@@ -4,6 +4,7 @@ const DeleteOrdersService = require("../../Services/Orders/DeleteOrdersService")
 const GetOrderBySingleBuyerService = require("../../Services/Orders/GetOrderBySingleBuyerService");
 const GetOrderBySingleSellerService = require("../../Services/Orders/GetOrderBySingleSellerService");
 const GetOrderBySingleSellerWithTypeService = require("../../Services/Orders/GetOrderBySingleSellerWithTypeService");
+const GetOrderByTransactionIDService = require("../../Services/Orders/GetOrderByTransactionIDService");
 const GetOrderTrackingByOrderService = require("../../Services/Orders/GetOrderTrackingByOrderService");
 const GetOrdersService = require("../../Services/Orders/GetOrdersService");
 const GetSingleOrdersService = require("../../Services/Orders/GetSingleOrdersService");
@@ -60,3 +61,9 @@ exports.GetOrderTrackingByOrder = async (req, res) => {
   let result = await GetOrderTrackingByOrderService(req, OrdersModel);
   res.status(200).json(result);
 };
+
+//!get order by transaction id
+exports.GetOrderByTransactionID = async (req,res)=>{
+  let result = await GetOrderByTransactionIDService(req,OrdersModel);
+  res.status(200).json(result);
+}

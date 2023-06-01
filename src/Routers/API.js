@@ -1,4 +1,6 @@
 const express = require("express");
+const { base64encode } = require("nodejs-base64");
+
 const router = express.Router();
 const AuthVerifyMiddleware = require("../Middlewares/AuthVerifyMiddleware");
 const SuperAdminController = require("../Controllers/Admins/SuperAdminController");
@@ -38,6 +40,11 @@ const WithdrawalController = require("../Controllers/Withdrawal/WithdrawalContro
 const BankListController = require("../Controllers/BankList/BankListController");
 const RecipeCategoryController = require("../Controllers/RecipeCategory/RecipeCategoryController");
 const BuyerQuestionsAndAnswearController = require("../Controllers/BuyerQuestionsAndAnswear/BuyerQuestionsAndAnswearController");
+const { uuid } = require("uuidv4");
+const { default: mongoose } = require("mongoose");
+const CustomRequest = require("../../CustomRequest/CustomRequest");
+const { default: axios } = require("axios");
+const OrdersModel = require("../Models/Orders/OrdersModel");
 
 //!  ================== ****  Super Admin **** ==================
 // Super Admin Registration Router
@@ -688,7 +695,10 @@ router.delete(
 );
 
 //get address book by user
-router.get("/get-address-book-by-user/:id",AddressBookController.GetAddressBookByUser)
+router.get(
+  "/get-address-book-by-user/:id",
+  AddressBookController.GetAddressBookByUser
+);
 
 //!  ================== ****  Food Review  **** ==================
 
@@ -762,66 +772,6 @@ router.delete(
   "/delete-cart-items/:id",
 
   CartItemsController.DeleteCarItems
-);
-
-//!  ================== ****  Orders API  **** ==================
-
-//create Orders
-router.post(
-  "/create-orders",
-
-  OrdersController.CreateOrders
-);
-
-//get Orders
-router.get("/get-orders", AuthVerifyMiddleware, OrdersController.GetOrders);
-
-//get single Orders
-router.get(
-  "/get-single-orders/:id",
-
-  OrdersController.GetSingleOrders
-);
-
-//update single Orders
-router.post(
-  "/update-orders/:id",
-
-  OrdersController.UpdateOrders
-);
-
-//delete single Orders
-router.delete(
-  "/delete-orders/:id",
-
-  OrdersController.DeleteOrders
-);
-
-// get-order-by-single-seller
-router.get(
-  "/get-order-by-single-seller/:id",
-
-  OrdersController.GetOrderBySingleSeller
-);
-
-// get-order-by-single-buyer
-router.get(
-  "/get-order-by-single-buyer/:id",
-
-  OrdersController.GetOrderBySingleBuyer
-);
-
-//get order by single seller with type
-router.get(
-  "/get-order-by-single-seller-with-type/:id/:type",
-
-  OrdersController.GetOrderBySingleSellerWithType
-);
-//!get order tracking by order id
-router.get(
-  "/get-order-tracking-by-order/:id",
-
-  OrdersController.GetOrderTrackingByOrder
 );
 
 //!  ================== ****  Order Tacking  **** ==================
@@ -1399,10 +1349,116 @@ router.delete(
   RecipeCategoryController.DeleteRecipeCategory
 );
 
+//!  ================== ****  Orders API  **** ==================
+
+// //create Orders
+// router.post(
+//   "/create-orders",
+
+//   OrdersController.CreateOrders
+// );
+
+router.post("/create-orders", async (req, res) => {
+  try{
+    let postBody = req.body;
+    const token = req.headers["token"];
+
+    const transactionID = mongoose.Types.ObjectId().toString().slice(0, 20);
+    const orderID = uuid().slice(0,5)
+    const data1 = {
+      wmx_id: process.env.Merchant_ID,
+      merchant_order_id:orderID,
+      merchant_ref_id: transactionID,
+      app_name: "www.ownfood.com",
+      cart_info: "WMX5443344555,www.ownfood.com",
+      customer_name: "bijon",
+      customer_email: "bijontalukder1247@gmail.com",
+      customer_add: "chittagong,bangladesh",
+      customer_phone: "01632354922",
+      product_desc: "add cart",
+      amount: postBody.orderTotalAmount,
+      currency: "BDT",
+      options: base64encode("s=www.ownfood.com,i=103.200.95.105"),
+      callback_url: `http://localhost:5000/api/v1/payment/success?transactionID=${transactionID}`,
+      access_app_key: process.env.Access_App_Key,
+      authorization:
+        "Basic " +
+        base64encode(
+          `${process.env.Access_Username}:${process.env.Access_Password}`
+        ),
+    };
+  let walletmixUrl = await CustomRequest(data1,token)
+  let data = await OrdersModel.create(
+    {...postBody,orderStatus:false,transactionID:transactionID,orderNumber:orderID})
+
+  res.status(200).json({url:walletmixUrl,status: "Success",data:data})
+  }
+  catch(e){
+    res.status(400).json({url:'/',status: "Fail",data:data})
+  }
+
+});
+
+//get Orders
+router.get("/get-orders", AuthVerifyMiddleware, OrdersController.GetOrders);
+
+//get single Orders
+router.get(
+  "/get-single-orders/:id",
+
+  OrdersController.GetSingleOrders
+);
+
+//update single Orders
+router.post(
+  "/update-orders/:id",
+
+  OrdersController.UpdateOrders
+);
+
+//delete single Orders
+router.delete(
+  "/delete-orders/:id",
+
+  OrdersController.DeleteOrders
+);
+
+// get-order-by-single-seller
+router.get(
+  "/get-order-by-single-seller/:id",
+
+  OrdersController.GetOrderBySingleSeller
+);
+
+// get-order-by-single-buyer
+router.get(
+  "/get-order-by-single-buyer/:id",
+
+  OrdersController.GetOrderBySingleBuyer
+);
+
+//get order by single seller with type
+router.get(
+  "/get-order-by-single-seller-with-type/:id/:type",
+
+  OrdersController.GetOrderBySingleSellerWithType
+);
+//!get order tracking by order id
+router.get(
+  "/get-order-tracking-by-order/:id",
+  OrdersController.GetOrderTrackingByOrder
+);
+
 //! Payment method intrigate
+router.post("/payment/success", async(req, res) => {
+  const {transactionID} = req.query;
+ const result = await  OrdersModel.updateOne({transactionID},{orderStatus:true})
 
-router.post("https://sandbox.walletmix.com/init-payment-process",async(req,res)=>{
+ if(result.modifiedCount>0){
+  res.redirect(`http://localhost:3000/payment/success?transactionID=${transactionID}`);
 
-})
+ }
+});
+router.get("/orders-by-transaction-id/:id",OrdersController.GetOrderByTransactionID)
 
 module.exports = router;

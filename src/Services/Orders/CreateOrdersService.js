@@ -1,4 +1,5 @@
 const { base64encode } = require('nodejs-base64');
+const CustomRequest = require('../../../CustomRequest/CustomRequest');
 
 const CreateOrdersService = async (request, Model) => {
   try {
@@ -22,8 +23,10 @@ const CreateOrdersService = async (request, Model) => {
       callback_url: 'localhos:2345/sdf',
       access_app_key: process.env.Access_App_Key,
       authorization: "Basic "+base64encode(`${process.env.Access_Username}:${process.env.Access_Password}`)
-    };
-  
+    }
+  let x = await  CustomRequest(data1)
+  console.log(x);
+
     console.log(data1);
     return { status: "Success", data: data };
   } catch (e) {

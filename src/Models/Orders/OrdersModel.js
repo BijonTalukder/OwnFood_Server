@@ -4,11 +4,12 @@ const DataSchema = mongoose.Schema(
   {
     orderDeliveryAddressID: { type: mongoose.Schema.Types.ObjectId }, //!from addressBook
     orderBillingAddressID: { type: mongoose.Schema.Types.ObjectId }, //!from addressbook
-    orderStatusID: { type: mongoose.Schema.Types.ObjectId }, //!orderStatus
+    // orderStatusID: { type: mongoose.Schema.Types.ObjectId }, //!orderStatus
     customerID: { type: mongoose.Schema.Types.ObjectId },
+    transactionID:{type:String},
     OrderLabel: { type: String }, // INSTANT, PREORDER, WISH, CATERING
     sellerID: { type: mongoose.Schema.Types.ObjectId },
-    // orderStatus:{type}
+    orderStatus:{type:Boolean},
     orderDeliveryAddress: { type: String },
     orderBillingAddress: { type: String },
     orderNumber: { type: String },
@@ -17,17 +18,7 @@ const DataSchema = mongoose.Schema(
     orderDate: { type: Date, default: Date.now() },
 
     paymentDate: { type: Date, default: Date.now() },
-    orderItems: [
-      {
-        foodID: { type: mongoose.Schema.Types.ObjectId },
-        foodName: { type: String },
-        foodQty: { type: String },
-        foodUnitPrice: { type: String },
-        foodTotalPrice: { type: String },
-        kitchenName: { type: String },
-        sellerID: { type: mongoose.Schema.Types.ObjectId },
-      },
-    ],
+    orderItems: {type:Array},
     paymentType: { type: String },
   },
   { versionKey: false }
