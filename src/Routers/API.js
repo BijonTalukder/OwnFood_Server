@@ -1001,6 +1001,8 @@ router.get(
 
   BecomeSellerController.GetFoodBySeller
 );
+//get recipe limit by seller
+router.get("/get-recipe-by-single-seller/:id/:limit",BecomeSellerController.GetRecipeBySingleSeller)
 
 //get all order by single seller
 router.get(
@@ -1453,7 +1455,10 @@ router.get(
 router.post("/payment/success", async(req, res) => {
   const {transactionID} = req.query;
  const result = await  OrdersModel.updateOne({transactionID},{orderStatus:true})
+if(!transactionID){
+  res.redirect('/')
 
+}
  if(result.modifiedCount>0){
   res.redirect(`http://localhost:3000/payment/success?transactionID=${transactionID}`);
 

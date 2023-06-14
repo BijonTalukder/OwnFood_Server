@@ -11,7 +11,7 @@ const DataSchema = mongoose.Schema(
     sellerImage: { type: String },
     sellerName: { type: String },
     foodName: { type: String },
-    foodLabel: { type: String },
+    foodType: { type: String },//Instant /preOrder /wish /catering
     foodSlug: { type: String },
     foodImage: { type: String },
     foodThumb: { type: String },

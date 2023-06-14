@@ -1,4 +1,9 @@
-const MulterSharpResizer = require("smart-multer-sharp-resizing");
+// const MulterSharpResizer = require("smart-multer-sharp-resizing");
+
+// const MulterSharpResizer = require("smart-multer-sharp-resizer");
+
+const MulterSharpResizer = require("../../customNode/smart-multer-sharp-resizing");
+// const MulterSharpResizer = require("sma")
 
 let uploadDir = "./uploads";
 

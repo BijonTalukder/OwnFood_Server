@@ -9,6 +9,7 @@ const DataSchema = mongoose.Schema(
     regionID: { type: mongoose.Schema.Types.ObjectId },
     cityID: { type: mongoose.Schema.Types.ObjectId },
     sellerNationalityID: { type: String },
+    
     sellerNationalityByBornID: { type: String },
     sellerProfilePhoto: { type: Array },
     status: { type: Boolean, default: false },
